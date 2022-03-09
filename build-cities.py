@@ -7,7 +7,7 @@ from datetime import datetime
 from pprint import pprint
 
 # File paths
-city_update = 'city_update.csv'
+city_update = 'city_update.txt'
 city_file = 'cl-cities.csv'
 
 # Get list of CL cities and their URLs
