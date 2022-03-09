@@ -1,7 +1,14 @@
-from bs4 import BeautifulSoup
+# Load libraries
+import sys
 import requests
+from bs4 import BeautifulSoup
 from pprint import pprint
 
+# File paths
+print("Time to die")
+sys.exit()
+
+# Get list of CL cities and their URLs
 html_text = requests.get('https://www.craigslist.org/about/sites').text
 soup = BeautifulSoup(html_text, 'lxml')
 us_data = soup.find('div', class_='colmask')
