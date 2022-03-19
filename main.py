@@ -37,7 +37,7 @@ def city_info(days):
         print("city_info: Reading city list")
         cities_df = pd.read_csv(city_file)
 
-    print(f"city_info: Total cities: {len(cities_list)}")
+    print(f"city_info: Total cities: {len(cities_df)}")
 
     return cities_df
 
@@ -109,6 +109,6 @@ for index, row in citylist_df.iterrows():
 print()
 print(f"Total posting results: {post_count}")
 
-posts_df.to_csv(city_file, index=False, encoding='utf-8')
+posts_df.to_csv(posts_file, index=False, encoding='utf-8')
 
 
