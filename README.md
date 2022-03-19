@@ -8,6 +8,6 @@ Currently displays result to screen.
 To Do:
 X - Save cities list to CSV
 X - Scrape site list less frequently (weekly?)
-  - Save search results to CSV
-  - Add new listings to CSV
-  - Add time delay between requests
+X - Save search results to CSV
+X - Add new listings to CSV
+X - Add time delay between requests
