@@ -3,9 +3,11 @@ import sys
 import time
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import date, datetime
 from bs4 import BeautifulSoup
 from pprint import pprint
+
+from sqlalchemy import column
 
 # Define Functions
 
@@ -42,6 +44,7 @@ def city_info(days):
 # File paths
 city_update = 'city_update.txt'
 city_file = 'cl-cities.csv'
+posts_file = 'cl-posts.csv'
 
 # Get date of last city list update
 text_file = open(city_update, 'r')
@@ -58,18 +61,18 @@ print(f"main: Cities list last updated {delta.days} days ago")
 
 citylist_df = city_info(delta.days)
 
-sys.exit()
-
 # Step through cities list
 city_count = 0
 post_count = 0
+posts_df = pd.DataFrame(columns=['pid','title','price','date_time','link','img_link'])
 
 for index, row in citylist_df.iterrows():
     city_name = row['name']
     city_url = row['url']
     city_count += 1
-    #print(f"City #{city_count}: {city_name }")
+    print(f"City #{city_count}: {city_name }")
 
+    time.sleep(0.5)  # 1/2 second delay to avoid overwhelming the server
     html_text = requests.get(city_url+'search/boo?query=macgregor+%2826m%7C26x%29&purveyor-input=all&srchType=T').text
     soup = BeautifulSoup(html_text, 'lxml')
     results = soup.find_all('li', class_='result-row')
@@ -86,20 +89,26 @@ for index, row in citylist_df.iterrows():
         date_time = result.time['datetime']
         post_count += 1
 
-        #print(result)
-        print()
+        exists = pid in posts_df.pid.values
+        if exists:
+            print(f"Posting #: {pid} already added to the list")
 
-        print(f"Posting #: {post_count}")
-        print(f"PID: {pid}")
-        print(f"Date / Time: {date_time}")
-        print(f"Title: {title}")
-        print(f"Image Link: {img_link}")
-        print(f"Price: {price}")
-        print(f"City: {city_name}")
-        print(f"Link: {link}")
-        print()
+        else:
+            posts_df = posts_df.append({'pid': pid, 'title': title, 'price': price, 'date_time': date_time, 'link': link, 'img_link': img_link}, ignore_index=True)
+
+            print(f"Posting #: {post_count}")
+            print(f"PID: {pid}")
+            print(f"Date / Time: {date_time}")
+            print(f"Title: {title}")
+            print(f"Image Link: {img_link}")
+            print(f"Price: {price}")
+            print(f"City: {city_name}")
+            print(f"Link: {link}")
+            print()
 
 print()
 print(f"Total posting results: {post_count}")
+
+posts_df.to_csv(city_file, index=False, encoding='utf-8')
 
 
