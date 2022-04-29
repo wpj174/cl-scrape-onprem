@@ -73,7 +73,7 @@ for index, row in citylist_df.iterrows():
     print(f"City #{city_count}: {city_name }")
 
     time.sleep(0.5)  # 1/2 second delay to avoid overwhelming the server
-    html_text = requests.get(city_url+'search/boo?query=macgregor+%2826m%7C26x%29&purveyor-input=all&srchType=T').text
+    html_text = requests.get(city_url+'/search/boo?query=macgregor+%2826m%7C26x%29&purveyor-input=all&srchType=T').text
     soup = BeautifulSoup(html_text, 'lxml')
     results = soup.find_all('li', class_='result-row')
     print(f"Number of results: {len(results)}")
